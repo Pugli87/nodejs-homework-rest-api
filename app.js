@@ -1,21 +1,26 @@
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
-const routerContacts = require('./routes/api');
+require('dotenv').config();
+const contactsRouter = require('./routes/api');
 
-const notFoundMiddleware = require('./middlewares/notFound');
-const errorHandlerMiddleware = require('./middlewares/errorHandler');
+// import middlewares
+const { notFound, errorHandler } = require('./middlewares');
+const { notFoundMiddleware } = require('./middlewares/notFound');
+const { errorHandlerMiddleware } = require('./middlewares/errorHandler');
 
 const app = express();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
+// parse application/json
 app.use(express.json());
 app.use(logger(formatsLogger));
 app.use(cors());
 
-app.use('/', routerContacts());
+app.use('/api', contactsRouter());
 
-app.use(notFoundMiddleware);
-app.use(errorHandlerMiddleware);
+// middleware
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;
