@@ -59,8 +59,8 @@ const joiSchema = Joi.object({
   favorite: Joi.bool(),
 });
 
-const statusJoiSchema = Joi.object({
-  status: Joi.string().valid('basic', 'sale', 'stock').required(),
+const favoriteJoiSchema = Joi.object({
+  favorite: Joi.bool(),
 });
 
 const Contact = model('Contact', contactSchema);
@@ -68,5 +68,5 @@ const Contact = model('Contact', contactSchema);
 module.exports = {
   Contact,
   joiSchema,
-  statusJoiSchema,
+  favoriteJoiSchema,
 };
