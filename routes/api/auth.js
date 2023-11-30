@@ -1,8 +1,6 @@
 /*const express = require('express');
 
-const { validation, ctrlWrapper } = require('../../middlewares');
-const { auth: ctrl } = require('../../controllers');
-const { joiRegisterSchema, joiLoginSchema } = require('../../models/user');
+
 
 const router = express.Router();
 
@@ -13,11 +11,13 @@ router.post('/login', validation(joiLoginSchema), ctrlWrapper(ctrl.login));
 
 module.export = router;
 */
+const { validation, ctrlWrapper } = require('../../middlewares');
+const { auth: ctrl } = require('../../controllers');
+const { joiRegisterSchema, joiLoginSchema } = require('../../models/user');
 const express = require('express');
 
-const authRouter = express.router();
+const authRouter = express.Router();
+authRouter.post('/register', validation(joiRegisterSchema), ctrlWrapper(ctrl.register));
+authRouter.post('/login', validation(joiLoginSchema), ctrlWrapper(ctrl.login));
 
-module.exports = () => {
-  authRouter.post('/login');
-  return authRouter;
-};
+module.exports = authRouter;

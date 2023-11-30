@@ -3,6 +3,7 @@ const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 const contactsRouter = require('./routes/api');
+const authRouter = require('./routes/api/auth');
 
 // import middlewares
 const { notFound, errorHandler } = require('./middlewares');
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(logger(formatsLogger));
 app.use(cors());
 
+//app.use('/', contactsRouter());
 app.use('/api', contactsRouter());
 
 // middleware
