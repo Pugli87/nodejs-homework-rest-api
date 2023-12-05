@@ -15,6 +15,7 @@ const patchUserSchemeValidation = (body) => {
 	});
 	return Scheme.validate(body);
 };
+
 module.exports = {
 	userSchemeValidation,
 	patchUserSchemeValidation,

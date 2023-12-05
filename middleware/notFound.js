@@ -1,7 +1,5 @@
-const notFoundMiddleware = (req, res, next) => {
-	const error = new Error("Not found");
-	error.status = 404;
-	next(error);
+const notFoundMiddleware = (req, res) => {
+  res.status(404).json({ message: 'Not found' });
 };
 
 module.exports = notFoundMiddleware;

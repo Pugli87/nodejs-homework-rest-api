@@ -1,9 +1,5 @@
 const errorHandlerMiddleware = (err, req, res, next) => {
-  res.status(err.status || 500).json({
-    error: {
-      message: err.message,
-    },
-  });
+  res.status(500).json({ message: err.message });
 };
 
 module.exports = errorHandlerMiddleware;
