@@ -1,11 +1,11 @@
-## GoIT Node.js Course Template Homework
+# Plantilla de Tareas del Curso de Node.js de GoIT
 
-Виконайте форк цього репозиторію для виконання домашніх завдань (2-6)
-Форк створить репозиторій на вашому http://github.com
+Realiza un fork de este repositorio para completar las tareas (2-6). El fork
+creará un repositorio en tu cuenta de http://github.com.
 
-Додайте ментора до колаборації
+Agrega al mentor como colaborador.
 
-Для кожної домашньої роботи створюйте свою гілку.
+Crea una nueva rama para cada tarea.
 
 - hw02
 - hw03
@@ -13,19 +13,40 @@
 - hw05
 - hw06
 
-Кожна нова гілка для др повинна робитися з master
+Cada nueva rama para una tarea debe crearse a partir de la rama (master).
 
-Після того, як ви закінчили виконувати домашнє завдання у своїй гілці, необхідно зробити пулл-реквест (PR). Потім додати ментора для рев'ю коду. Тільки після того, як ментор заапрувить PR, ви можете виконати мердж гілки з домашнім завданням у майстер.
+Después de completar una tarea en tu rama, debes crear una solicitud de
+extracción (PR). Luego, agrega al mentor para que revise tu código. Solo después
+de que el mentor apruebe el PR, puedes fusionar la rama de la tarea en master.
 
-Уважно читайте коментарі ментора. Виправте зауваження та зробіть коміт у гілці з домашнім завданням. Зміни підтягнуться у PR автоматично після того, як ви відправите коміт з виправленнями на github
-Після виправлення знову додайте ментора на рев'ю коду.
+Lee cuidadosamente los comentarios del mentor. Corrige las observaciones y
+realiza un commit en la rama de la tarea. Los cambios se reflejarán
+automáticamente en el PR después de enviar el commit con las correcciones.
+Luego, vuelve a agregar al mentor para que revise nuevamente.
 
-- При здачі домашньої роботи є посилання на PR
-- JS-код чистий та зрозумілий, для форматування використовується Prettier
+Al entregar la tarea, proporciona un enlace al PR. El código JavaScript debe ser
+limpio y comprensible, y se debe usar Prettier para el formateo.
 
-### Команди:
+### Comandos:
 
-- `npm start` &mdash; старт сервера в режимі production
-- `npm run start:dev` &mdash; старт сервера в режимі розробки (development)
-- `npm run lint` &mdash; запустити виконання перевірки коду з eslint, необхідно виконувати перед кожним PR та виправляти всі помилки лінтера
-- `npm lint:fix` &mdash; та ж перевірка лінтера, але з автоматичними виправленнями простих помилок
+- `npm start` &mdash; inicia el servidor en modo producción.
+- `npm run dev` &mdash; inicia el servidor en modo de desarrollo.
+- `npm run lint` &mdash; ejecuta la verificación del código con ESLint;
+  asegúrate de ejecutarlo antes de cada PR y corrige todos los errores del
+  linter.
+  - `npm lint:fix` &mdash; similar a la verificación del linter, pero con
+    correcciones automáticas para errores simples.
+
+# como utilizar crypto
+
+```js
+const crypto = require("crypto");
+
+const generateSecretKey = () => {
+	const length = 32; // Longitud en bytes (256 bits)
+	return crypto.randomBytes(length).toString("hex");
+};
+
+const secretKey = generateSecretKey();
+console.log(secretKey);
+```

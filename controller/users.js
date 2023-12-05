@@ -8,7 +8,7 @@ const secret = process.env.SECRET_KEY;
 // Path to create a user
 const signUp = async (req, res) => {
 	try {
-		// Validación de la solicitud de registro usando Joi
+		// Validation of the registration request using Joi
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 			password: Joi.string().min(6).required(),
@@ -21,20 +21,19 @@ const signUp = async (req, res) => {
 
 		const { email, password } = req.body;
 
-		// Verificar si el correo ya está en uso
+		// Check if the mail is already in use
 		const existingUser = await User.findOne({ email });
 		if (existingUser) {
 			return res.status(409).json({ message: "Email in use" });
 		}
 
-		// Hash de la contraseña usando bcrypt
+		// Hashing the password using bcrypt
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		// Crear un nuevo usuario en la base de datos
+		//Create a new user in the database
 		const newUser = new User({ email, password: hashedPassword });
 		await newUser.save();
 
-		// Respuesta exitosa
 		res.status(201).json({
 			user: { email: newUser.email, subscription: newUser.subscription },
 		});
@@ -43,10 +42,10 @@ const signUp = async (req, res) => {
 	}
 };
 
-//route de logout con el middleware de autenticación
+// Logout route with authentication middleware
 const logIn = async (req, res, next) => {
 	try {
-		// Validación de la solicitud de inicio de sesión usando Joi
+		// Validating the login request using Joi
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 			password: Joi.string().required(),
@@ -59,22 +58,21 @@ const logIn = async (req, res, next) => {
 
 		const { email, password } = req.body;
 
-		// Buscar al usuario por correo electrónico
+		// Search for the user by email
 		const user = await User.findOne({ email });
 		if (!user || !(await bcrypt.compare(password, user.password))) {
 			return res.status(401).json({ message: "Email or password is wrong" });
 		}
 
-		// Crear un token JWT
+		// Create a JWT Token
 		const token = jwt.sign({ id: user._id, email: user.email }, secret, {
 			expiresIn: "1h",
 		});
 
-		// Actualizar el token en el modelo de usuario
+		// Refresh the token in the user model
 		user.token = token;
 		await user.save();
 
-		// Respuesta exitosa
 		res.json({
 			token,
 			user: {
@@ -96,10 +94,10 @@ const logOut = async (req, res) => {
 			return res.status(401).json({ message: "Not authorized" });
 		}
 
-		user.token = ""; // Elimina el token en el usuario
+		user.token = ""; // Delete the token on the user
 		await user.save();
 
-		res.status(204).send(); // Respuesta exitosa sin contenido
+		res.status(204).send(); // Successful response without content
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });
 	}

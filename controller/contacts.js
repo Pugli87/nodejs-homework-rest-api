@@ -38,7 +38,7 @@ const createContact = async (req, res, next) => {
 			return res.status(400).json({ message: error.details[0].message });
 		}
 
-		const ownerId = req.user._id; // Obtener el _id del usuario autenticado
+		const ownerId = req.user._id; // Get the authenticated user's _id
 		const newContactData = { ...req.body, owner: ownerId };
 
 		const newContact = await Contact.create(newContactData);

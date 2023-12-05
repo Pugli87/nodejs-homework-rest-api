@@ -4,8 +4,8 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-const contactsRouter = require("./routes/api/contacts"); // Importa la ruta de los contactos
-const authRouter = require("./routes/api/users"); // Importa la ruta de autenticación
+const contactsRouter = require("./routes/api/contacts"); // Import the path of contacts
+const authRouter = require("./routes/api/users"); // Import the authentication path
 
 // import middlewares
 const { notFound, errorHandler } = require("./middleware");
@@ -18,11 +18,10 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-// Usa la ruta de autenticación para el registro y el inicio de sesión
-app.use("/api/auth", authRouter);
+app.use("/api/auth", authRouter); // Use the authentication path for registration and sign-in
 
-// Middleware para verificar el token y proteger las rutas necesarias
-app.use("/api/contacts", contactsRouter); // Usa la ruta de los contactos
+app.use("/api/contacts", contactsRouter); // Use the contact path
+// Middleware to verify the token and secure the necessary routes
 
 app.use(notFound);
 
