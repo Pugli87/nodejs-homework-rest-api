@@ -2,19 +2,17 @@ const Joi = require("joi");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {
+	userSchemeValidation,
+	patchUserSchemeValidation,
+} = require("../models/userValidations");
 
 const secret = process.env.SECRET_KEY;
 
 // Path to create a user
 const signUp = async (req, res) => {
 	try {
-		// Validation of the registration request using Joi
-		const schema = Joi.object({
-			email: Joi.string().email().required(),
-			password: Joi.string().min(6).required(),
-		});
-
-		const { error } = schema.validate(req.body);
+		const { error } = userSchemeValidation(req.body);
 		if (error) {
 			return res.status(400).json({ message: error.details[0].message });
 		}
@@ -45,13 +43,7 @@ const signUp = async (req, res) => {
 // Logout route with authentication middleware
 const logIn = async (req, res, next) => {
 	try {
-		// Validating the login request using Joi
-		const schema = Joi.object({
-			email: Joi.string().email().required(),
-			password: Joi.string().required(),
-		});
-
-		const { error } = schema.validate(req.body);
+		const { error } = userSchemeValidation(req.body);
 		if (error) {
 			return res.status(400).json({ message: error.details[0].message });
 		}
@@ -117,9 +109,34 @@ const current = (req, res) => {
 	}
 };
 
+const updateSuscriptionUser = async (req, res, next) => {
+	try {
+		const userId = await req.user._id;
+		const body = await req.body;
+		if (!body || Object.keys(body).length === 0) {
+			return res.status(400).json({ message: "Missing field subscription" });
+		} else {
+			//Validation Scheme
+			const { error } = patchUserSchemeValidation(body);
+			if (error !== undefined) {
+				res.status(404).json({ message: "Not found" });
+			} else {
+				const result = await service.updateSubscriptionUser(userId, body);
+				res.status(200).json(result);
+			}
+		}
+	} catch (error) {
+		return res.status(500).json({
+			result: null,
+			message: error,
+		});
+	}
+};
+
 module.exports = {
 	signUp,
 	logIn,
 	logOut,
 	current,
+	updateSuscriptionUser,
 };
