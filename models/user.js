@@ -1,60 +1,25 @@
-const Joi = require('joi');
-const { Schema, model } = require('mongoose');
-const bcrypt = require('bcryptjs');
+// service/schemas/user.js
+const mongoose = require('mongoose');
 
-const codeEmail = { minDomainSegments: 2, tlds: { allow: ['com', 'net'] } };
-
-const userSchema = Schema(
-  {
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-    },
+const userSchema = new mongoose.Schema({
     email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
+        type: String,
+        required: [true, 'Email is required'],
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: [true, 'Password is required'],
     },
     subscription: {
-      type: String,
-      enum: ['starter', 'pro', 'business'],
-      default: 'starter',
+        type: String,
+        enum: ['starter', 'pro', 'business'],
+        default: 'starter',
     },
     token: {
-      type: String,
-      default: null,
+        type: String,
+        default: null,
     },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    },
-  },
-  { versionKey: false, timestamps: true },
-);
-
-userSchema.methods.setPassword = function (password) {
-  this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-};
-
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
-
-const joiRegisterSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  password: Joi.string().min(6).required(),
 });
 
-const joiLoginSchema = Joi.object({
-  email: Joi.string().email(codeEmail).required(),
-  pasword: Joi.string().min(6).required(),
-});
-
-const User = model('user', userSchema);
-
-module.exports = {
-  User,
-  joiRegisterSchema,
-  joiLoginSchema,
-};
+module.exports = mongoose.model('User', userSchema);
