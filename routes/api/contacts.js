@@ -1,20 +1,19 @@
-const express = require('express');
-const { validation, ctrlWrapper } = require('../../middlewares');
-const { contacts: ctrl } = require('../../controllers');
-const { joiSchema, favoriteJoiSchema } = require('../../models');
+// api/contacts.js (Updated protected route)
+const express = require("express");
+const controller = require("../../controller/contacts");
+const auth = require("../../middleware/auth"); // Import the authentication middleware
 
-const routerContacts = express.Router();
+const contactsRouter = express.Router();
 
-routerContacts.get('/', ctrlWrapper(ctrl.getContacts));
+contactsRouter.get("/", auth, controller.getAllContacts); // Use auth middleware
+contactsRouter.get("/:contactId", auth, controller.getContactById); // Use auth middleware
+contactsRouter.post("/", auth, controller.createContact); // Use auth middleware
+contactsRouter.put("/:contactId", auth, controller.updateContact); // Use auth middleware
+contactsRouter.delete("/:contactId", auth, controller.deleteContact); // Use auth middleware
+contactsRouter.patch(
+	"/:contactId/favorite",
+	auth,
+	controller.updateStatusContact
+); // Use auth middleware
 
-routerContacts.get('/:id', ctrlWrapper(ctrl.getContactById));
-
-routerContacts.post('/', validation(joiSchema), ctrlWrapper(ctrl.createContact));
-
-routerContacts.put('/:id', ctrlWrapper(ctrl.updateContact));
-
-routerContacts.patch('/:id/favorite', validation(favoriteJoiSchema), ctrlWrapper(ctrl.updateStatusContacts));
-
-routerContacts.delete('/:id', ctrlWrapper(ctrl.removeContact));
-
-module.exports = routerContacts;
+module.exports = contactsRouter;

@@ -1,9 +1,11 @@
 const express = require('express');
-const routerContacts = require('./contacts');
-const routerIndex = express.Router();
+const usersRouter = require('./users');
+const contactsRouter = require('./contacts');
+
+const indexRouter = express.Router();
 
 module.exports = () => {
-  routerIndex.use('/Contacts', routerContacts);
-
-  return routerIndex;
+  indexRouter.use('/contacts', contactsRouter);
+  indexRouter.use('/users', usersRouter);
+  return indexRouter;
 };
